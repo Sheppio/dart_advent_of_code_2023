@@ -96,7 +96,6 @@ Map<Point, List<Part>> doGearStuff(List<String> schematic, List<Part> parts) {
   for (var part in parts) {
     final locsToCheck = getLocationsToCheckForSymbols(
         part, schematic[0].length, schematic.length);
-    final locsValue = <Point, String>{};
     for (var e in locsToCheck) {
       final value =
           schematic[e.y as int].substring(e.x as int, (e.x as int) + 1);
