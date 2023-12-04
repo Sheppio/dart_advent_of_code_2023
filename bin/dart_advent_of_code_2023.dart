@@ -1,5 +1,7 @@
-import 'package:dart_advent_of_code_2023/dart_advent_of_code_2023.dart' as dart_advent_of_code_2023;
+import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part1.dart';
+import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part2.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${dart_advent_of_code_2023.calculate()}!');
+  day1_trebuchet_calibration_part1();
+  day1_trebuchet_calibration_part2();
 }
