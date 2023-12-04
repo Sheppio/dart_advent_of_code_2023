@@ -3,7 +3,7 @@ import 'dart:io';
 
 void day1_trebuchet_calibration_part1() async {
   // https://adventofcode.com/2023/day/1/input
-  var input = await File('assets/input.txt')
+  var input = await File('assets/day1_input.txt')
       .readAsString()
       .then((value) => value.split('\n'));
   print(input);
