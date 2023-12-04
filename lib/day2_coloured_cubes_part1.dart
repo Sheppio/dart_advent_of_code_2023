@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import "dart:math";
 
 class Grab {
   int red;
@@ -12,7 +13,7 @@ class Grab {
   });
 
   @override
-  String toString() => 'Grab(red: $red, blue: $blue, green: $green)';
+  String toString() => 'Grab(r: $red, b: $blue, g: $green)';
 }
 
 class Game {
@@ -23,11 +24,23 @@ class Game {
     required this.grabs,
   });
 
+  Grab get minimumGrab {
+    return Grab(
+        red: grabs.map((e) => e.red).reduce(max),
+        blue: grabs.map((e) => e.blue).reduce(max),
+        green: grabs.map((e) => e.green).reduce(max));
+  }
+
+  int get cubePower {
+    final g = minimumGrab;
+    return g.red * g.blue * g.green;
+  }
+
   @override
   String toString() => 'Game(id: $id, grabs: $grabs)';
 }
 
-void Day2ColouredCubesPart1() async {
+Future<void> Day2ColouredCubesPart1() async {
   var input = await File('assets/day2_input.txt').readAsLines();
   final games = <Game>[];
   for (var line in input) {
@@ -37,8 +50,16 @@ void Day2ColouredCubesPart1() async {
   // for (var element in games) {
   //   print(element);
   // }
-  final invalidGamesCount = games.where((game) => isGameValid(game) == false);
-  print('Invalid games count: $invalidGamesCount');
+  final validGamesIdSum = games
+      .where((game) => isGameValid(game) == true)
+      .fold(0, (value, element) {
+    return value + element.id;
+  });
+  print('Valid games count: $validGamesIdSum');
+  final sumOfPower = games
+      .map((e) => e.cubePower)
+      .fold(0, (previousValue, element) => previousValue + element);
+  print('sumOfPower: $sumOfPower');
 }
 
 Game ProcessInputLine(String line) {
@@ -83,13 +104,14 @@ bool isGameValid(Game game) {
       return false;
     }
   }
+  print('Valid game: $game');
   return true;
 }
 
 bool isGrabValid(Grab grab) {
-  if (grab.red > 12 || grab.green > 13 || grab.blue > 14) {
-    return false;
-  } else {
+  if (grab.red <= 12 && grab.green <= 13 && grab.blue <= 14) {
     return true;
+  } else {
+    return false;
   }
 }
