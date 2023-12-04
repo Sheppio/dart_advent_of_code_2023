@@ -40,7 +40,7 @@ class Game {
   String toString() => 'Game(id: $id, grabs: $grabs)';
 }
 
-Future<void> Day2ColouredCubesPart1() async {
+Future<void> Day2ColouredCubes() async {
   var input = await File('assets/day2_input.txt').readAsLines();
   final games = <Game>[];
   for (var line in input) {
@@ -56,6 +56,8 @@ Future<void> Day2ColouredCubesPart1() async {
     return value + element.id;
   });
   print('Valid games count: $validGamesIdSum');
+
+  //Part 2
   final sumOfPower = games
       .map((e) => e.cubePower)
       .fold(0, (previousValue, element) => previousValue + element);
