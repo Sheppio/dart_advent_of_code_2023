@@ -49,6 +49,26 @@ Future<void> Day4ScratchCards() async {
     final sum =
         cards.fold(0, (previousValue, card) => previousValue + card.pointValue);
     print('Sum of points values: $sum');
+
+    final cardCounts = <int, int>{};
+    for (var card in cards) {
+      cardCounts[card.id] = 1;
+    }
+    for (var card in cards) {
+      final id = card.id;
+      final wins = card.winningNumberCount;
+      for (var v = 0; v < cardCounts[id]!; v++) {
+        for (var i = 1; i <= wins; i++) {
+          final idToInc = id + i;
+          if (cardCounts.containsKey(idToInc)) {
+            cardCounts[idToInc] = cardCounts[idToInc]! + 1;
+          }
+        }
+      }
+    }
+    final cardCount = cardCounts.values
+        .fold(0, (previousValue, element) => previousValue + element);
+    print('card count: $cardCount');
   }
 }
 
