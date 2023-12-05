@@ -49,27 +49,82 @@ Future<void> Day5Seeds() async {
   var humidityToLocation = await createRangeController('assets/day5_seeds_humidity_to_location.txt');
 
   final locs = seeds.map((seed) {
-    final soil = seedToSoil.mapToDest(seed);
-    final fertilizer = soilToFertilizer.mapToDest(soil);
-    final water = fertilizerToWater.mapToDest(fertilizer);
-    final light = waterToLight.mapToDest(water);
-    final temp = lightToTemperature.mapToDest(light);
-    final humidity = temperatureToHumidity.mapToDest(temp);
-    final loc = humidityToLocation.mapToDest(humidity);
-    return loc;
+    return getLocationForSeed(seed, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature,
+        temperatureToHumidity, humidityToLocation);
   }).toList();
 
-  final minLoc = locs.reduce(min);
+  var minLoc = locs.reduce(min);
 
   print('minLoc: $minLoc');
 
-  print(seedToSoil);
+  //Part 2
+  final seedRanges = await getSeedRanges('assets/day5_seeds_seeds.txt');
+  final toCheckCount = seedRanges.values.reduce((value, element) => value + element);
+  print(toCheckCount);
+  minLoc = int.parse('999999999999');
+  var checkCount = 0;
+
+  // final timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+  //   print('$checkCount/$toCheckCount: minLoc --> $minLoc');
+  // });
+
+  for (var r in seedRanges.entries) {
+    print('Checking ${r.key}-${r.key + r.value - 1} (${r.value})');
+    printStatusOfPart2(checkCount, toCheckCount, minLoc, r.key);
+    for (var i = 0; i < r.value; i++) {
+      checkCount++;
+      final seedValue = r.key + i;
+      final loc = getLocationForSeed(seedValue, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight,
+          lightToTemperature, temperatureToHumidity, humidityToLocation);
+      if (loc < minLoc) minLoc = loc;
+      if (checkCount % 10000000 == 0) printStatusOfPart2(checkCount, toCheckCount, minLoc, seedValue);
+    }
+    printStatusOfPart2(checkCount, toCheckCount, minLoc, r.key + r.value - 1);
+  }
+
+  //timer.cancel;
+
+  print('minLoc: $minLoc');
+}
+
+void printStatusOfPart2(int checkCount, int toCheckCount, int minLoc, int seedValue) => print(
+    '$checkCount/$toCheckCount (${((checkCount / toCheckCount) * 100).toStringAsPrecision(3)}%): minLoc --> $minLoc   Seed:$seedValue ');
+
+int getLocationForSeed(
+    int seed,
+    RangeController seedToSoil,
+    RangeController soilToFertilizer,
+    RangeController fertilizerToWater,
+    RangeController waterToLight,
+    RangeController lightToTemperature,
+    RangeController temperatureToHumidity,
+    RangeController humidityToLocation) {
+  final soil = seedToSoil.mapToDest(seed);
+  final fertilizer = soilToFertilizer.mapToDest(soil);
+  final water = fertilizerToWater.mapToDest(fertilizer);
+  final light = waterToLight.mapToDest(water);
+  final temp = lightToTemperature.mapToDest(light);
+  final humidity = temperatureToHumidity.mapToDest(temp);
+  final loc = humidityToLocation.mapToDest(humidity);
+  return loc;
 }
 
 Future<List<int>> getSeedList(String path) async {
-  final line = (await File('assets/day5_seeds_seeds.txt').readAsLines())[0];
+  final line = (await File(path).readAsLines())[0];
   final tokens = line.split(' ');
   return tokens.map((e) => int.parse(e)).toList();
+}
+
+Future<Map<int, int>> getSeedRanges(String path) async {
+  final line = (await File(path).readAsLines())[0];
+  final tokens = line.split(' ');
+  final ranges = <int, int>{};
+  for (var i = 0; i < tokens.length; i += 2) {
+    final start = int.parse(tokens[i]);
+    final count = int.parse(tokens[i + 1]);
+    ranges[start] = count;
+  }
+  return ranges;
 }
 
 Future<RangeController> createRangeController(String path) async {
