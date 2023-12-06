@@ -85,7 +85,7 @@ Future<void> Day6BoatRace() async {
 }
 
 ({num i, num j}) quadraticSolver(num a, num b, num c) {
-  final negHalfB = -b / 2;
-  final other = (sqrt(pow(b, 2) - (4 * a * c))) / 2;
+  final negHalfB = -b / (2 * a);
+  final other = (sqrt(pow(b, 2) - (4 * a * c))) / (2 * a);
   return (i: negHalfB - other, j: negHalfB + other);
 }
