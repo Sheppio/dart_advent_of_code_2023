@@ -68,11 +68,20 @@ Future<void> Day6BoatRace() async {
   //part2 data
   final dur = int.parse(times.map((e) => e.toString()).join());
   final dist = int.parse(dists.map((e) => e.toString()).join());
+  var startTS = DateTime.now();
   final answers = quadraticSolver(1, -dur, dist);
   final lower = answers.i.ceil();
   final upper = answers.j.floor();
   final betweenInclusive = (upper - lower) + 1;
-  print('Part 2: $betweenInclusive');
+  var endTS = DateTime.now();
+  print('Part 2: $betweenInclusive (in ${endTS.difference(startTS).inMicroseconds}μs)');
+
+  startTS = DateTime.now();
+  final bruteForce =
+      Race(duration: 41968894, distRecord: 214178911271055).getPossibleRaceResults().where((rr) => rr.isRecord).length;
+  endTS = DateTime.now();
+
+  print('Part 2 (brute force): $bruteForce (in ${endTS.difference(startTS).inMicroseconds}μs)');
 }
 
 ({num i, num j}) quadraticSolver(num a, num b, num c) {
