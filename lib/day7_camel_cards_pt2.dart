@@ -35,7 +35,7 @@ class Hand implements Comparable<Hand> {
 
   Hand get bestJokeredHand {
     final jokeredHands = createJokerHandList(this);
-    jokeredHands.sort();
+    jokeredHands.sort(compareUsingCards);
     final bjh = jokeredHands.last;
     print('${bjh} --> (${cards.where((element) => element == 'J').length}) : ${jokeredHands.length}');
     return bjh;
@@ -99,7 +99,7 @@ class Hand implements Comparable<Hand> {
 
 //TODO: we need two comparitors.  bestJokeredHand needs to use cards,and normal sorting needs original cards
   @override
-  //int compareTo(Hand other) {
+  int compareTo(Hand other) {
     if (originalCards.join('') == '24753' && other.originalCards.join('') == 'AKQ45') {
       print('STOP');
     }
@@ -114,6 +114,21 @@ class Hand implements Comparable<Hand> {
     return 0;
   }
 }
+
+Comparator<Hand> compareUsingCards = (a, other) {
+  if (a.originalCards.join('') == '24753' && other.originalCards.join('') == 'AKQ45') {
+    print('STOP');
+  }
+  final typeComp = a.handType.index.compareTo(other.handType.index);
+  if (typeComp != 0) {
+    return typeComp;
+  }
+  for (var i = 0; i < a.cards.length; i++) {
+    final weightComp = a.cards[i].cardWeight().compareTo(other.cards[i].cardWeight());
+    if (weightComp != 0) return weightComp;
+  }
+  return 0;
+};
 
 Future<void> Day7CamelCardsPt2() async {
   final input = await File('assets/day7_camel_cards.txt').readAsLines();
@@ -134,7 +149,7 @@ Future<void> Day7CamelCardsPt2() async {
   final tempHand = Hand(cards: ['J', 'J', 'J', 'J', 'J'], originalCards: ['J', 'J', 'J', 'J', 'J'], bid: 123);
   final allHands = Hand.createJokerHandList(tempHand);
   print(allHands.last);
-  allHands.sort();
+  allHands.sort(compareUsingCards);
   print(allHands.last);
 
   print(tempHand.bestJokeredHand);
