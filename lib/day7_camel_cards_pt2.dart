@@ -68,7 +68,7 @@ class Hand implements Comparable<Hand> {
       case 'Q':
         return 12;
       case 'J':
-        return 11;
+        return 0;
       case 'T':
         return 10;
       default:
@@ -135,26 +135,28 @@ Future<void> Day7CamelCardsPt2() async {
   //final input = await File('assets/day7_camel_cards_test.txt').readAsLines();
   final hands = getHandsFromInput(input);
 
-  // final bestJokeredHands = hands.map((e) => e.bestJokeredHand).toList();
-  // bestJokeredHands.sort();
-  // print(bestJokeredHands.join('\n'));
+  final bestJokeredHands = hands.map((e) => e.bestJokeredHand).toList();
+  bestJokeredHands.sort();
+  //print(bestJokeredHands.join('\n'));
 
-  // var winnings = 0;
-  // for (var i = 0; i < bestJokeredHands.length; i++) {
-  //   final rank = i + 1;
-  //   winnings += bestJokeredHands[i].bid * rank;
-  // }
-  // print('bestJokeredHands winnings: $winnings');
+  var winnings = 0;
+  for (var i = 0; i < bestJokeredHands.length; i++) {
+    final rank = i + 1;
+    final winning = bestJokeredHands[i].bid * rank;
+    winnings += winning;
+    print('\n${bestJokeredHands[i]}, \$${bestJokeredHands[i].bid}, r: $rank, w: $winning, tw: $winnings');
+  }
+  print('bestJokeredHands winnings: $winnings');
 
-  final tempHand = Hand(cards: ['J', 'J', 'J', 'J', 'J'], originalCards: ['J', 'J', 'J', 'J', 'J'], bid: 123);
-  final allHands = Hand.createJokerHandList(tempHand);
-  print(allHands.last);
-  allHands.sort(compareUsingCards);
-  print(allHands.last);
+  // final tempHand = Hand(cards: ['J', 'J', 'J', 'J', 'J'], originalCards: ['J', 'J', 'J', 'J', 'J'], bid: 123);
+  // final allHands = Hand.createJokerHandList(tempHand);
+  // print(allHands.last);
+  // allHands.sort(compareUsingCards);
+  // print(allHands.last);
 
-  print(tempHand.bestJokeredHand);
-  print(allHands.take(1000).join('\n'));
-  print(allHands.length);
+  // print(tempHand.bestJokeredHand);
+  // print(allHands.take(1000).join('\n'));
+  // print(allHands.length);
 }
 
 List<Hand> getHandsFromInput(List<String> input) {
