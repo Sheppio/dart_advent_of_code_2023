@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:dart_advent_of_code_2023/day10_pipes.dart';
+import 'package:dart_advent_of_code_2023/day11_cosmic_expansion.dart';
 import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part1.dart';
 import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part2.dart';
 import 'package:dart_advent_of_code_2023/day2_coloured_cubes.dart';
@@ -24,6 +27,7 @@ void main(List<String> arguments) async {
   //await Day7CamelCardsPt2();
   //await Day8CamelDirections();
   //await Day9Oasis();
-  await Day10Pipes();
+  //await Day10Pipes();
+  await Day11CosmicExpansion();
   print("${ConsoleColors.yellowBg} Done");
 }
