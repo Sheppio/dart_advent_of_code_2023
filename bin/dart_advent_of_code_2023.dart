@@ -1,3 +1,4 @@
+import 'package:dart_advent_of_code_2023/day10_pipes.dart';
 import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part1.dart';
 import 'package:dart_advent_of_code_2023/day1_trebuchet_calibration_part2.dart';
 import 'package:dart_advent_of_code_2023/day2_coloured_cubes.dart';
@@ -22,6 +23,7 @@ void main(List<String> arguments) async {
   //await Day7CamelCards();
   //await Day7CamelCardsPt2();
   //await Day8CamelDirections();
-  await Day9Oasis();
+  //await Day9Oasis();
+  await Day10Pipes();
   print("${ConsoleColors.yellowBg} Done");
 }
