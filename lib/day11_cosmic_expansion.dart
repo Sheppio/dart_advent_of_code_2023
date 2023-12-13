@@ -32,15 +32,17 @@ class GalaxyPair {
 }
 
 Future<void> Day11CosmicExpansion() async {
-  final input = (await File('assets/day11_input_cosmic_expansion.txt').readAsLines());
-  var cosmos = expandCosmosVertically(input);
-  //var cosmos = input;
+  var cosmos = (await File('assets/day11_input_cosmic_expansion.txt').readAsLines());
+
+  // comment out here
+  cosmos = expandCosmosVertically(cosmos);
 
   print(cosmos.join('\n'));
 
   cosmos = transpose(cosmos);
   cosmos = expandCosmosVertically(cosmos);
   cosmos = transpose(cosmos);
+  //to here for non-expanded cosmos
 
   print('\n' * 2);
   print(cosmos.join('\n'));
